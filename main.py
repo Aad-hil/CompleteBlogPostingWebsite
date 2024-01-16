@@ -12,7 +12,7 @@ from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
 # Optional: add contact me email functionality (Day 60)
 # import smtplib
 
-
+import os
 '''
 Make sure the required packages are installed: 
 Open the Terminal in PyCharm (bottom left). 
@@ -28,7 +28,9 @@ This will install the packages from the requirements.txt for this project.
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+secret = os.environ.get('FLASKKEY')
+app.config['SECRET_KEY'] = str(secret)
+
 ckeditor = CKEditor(app)
 Bootstrap5(app)
 
@@ -53,7 +55,8 @@ gravatar = Gravatar(app,
                     base_url=None)
 
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
+db_path = os.environ.get("DB_URI", "sqlite:///posts.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = str(db_path)
 db = SQLAlchemy()
 db.init_app(app)
 
