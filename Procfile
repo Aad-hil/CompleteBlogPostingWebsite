@@ -1,1 +1,1 @@
-web: gunicorn main:app port:5001
+web: gunicorn main:app
