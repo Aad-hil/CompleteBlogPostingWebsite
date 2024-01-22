@@ -282,16 +282,18 @@ def contact():
         email = request.form['email']
         message = request.form['message']
         email_message = f"Subject:New Message\n\nName: {user_name}\nEmail: {email}\nPhone: {number}\nMessage:{message}"
-        connection = smtplib.SMTP("smtp.gmail.com")
-        connection.starttls()
-        connection.login(user=MAIL_ADDRESS, password=MAIL_APP_PW)
-        connection.sendmail(from_addr=str(MAIL_ADDRESS),
-                            to_addrs=MAIL_ADDRESS,
-                            msg=email_message
-                            )
-        connection.close()
+        with smtplib.SMTP("smtp.gmail.com") as connection:
+            connection.starttls()
+            connection.login(MAIL_ADDRESS, MAIL_APP_PW)
+            connection.sendmail(from_addr=MAIL_ADDRESS,
+                                to_addrs=MAIL_ADDRESS,
+                                msg=email_message
+                                )
         return render_template("contact.html", msg_sent=True)
     return render_template("contact.html", msg_sent=False)
+
+
+
 
 
 if __name__ == "__main__":
